@@ -9,11 +9,19 @@ import retrofit2.http.POST;
 import retrofit2.http.Query;
 
 public interface retro {
-    @GET("/api/user")
+    @GET("/api/purchase")
     Call<UserPojo> doGetListResources();
 
-    @POST("/api/register")
+    @POST("/api/purchase")
     Call<UserReg> createUser(@Body UserReg user);
+
+    @POST("/api/sales")
+    Call<SalesReg> createSales(@Body SalesReg user);
+
+
+    @POST("/api/login")
+    Call<login> createLogin(@Body login user);
+
 
 //    @GET("/api/users?")
 //    Call<UserList> doGetUserList(@Query("page") String page);

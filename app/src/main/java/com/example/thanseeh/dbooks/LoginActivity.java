@@ -16,20 +16,32 @@ import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.thanseeh.dbooks.retrofit.APIClient;
+import com.example.thanseeh.dbooks.retrofit.login;
+import com.example.thanseeh.dbooks.retrofit.retro;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.Manifest.permission.READ_CONTACTS;
 
@@ -50,11 +62,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     private static final String[] DUMMY_CREDENTIALS = new String[]{
             "foo@example.com:hello", "bar@example.com:world"
     };
+    retro apiInterface;
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
@@ -64,11 +76,25 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(getSharedPreferences("Log",MODE_PRIVATE).getString("logged","0").contentEquals("admin")){
-            Intent nxtPage = new Intent(LoginActivity.this,MainActivityAdmin.class);
-            finish();
+        if (getSharedPreferences("Log", MODE_PRIVATE).getString("logged", "0").contentEquals("logged")) {
+            Intent nxtPage = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(nxtPage);
+            finish();
         }
+        Window window = this.getWindow();
+
+// clear FLAG_TRANSLUCENT_STATUS flag:
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+// add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+
+// finally change the color
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.my_statusbar_color));
+        }
+
+
         setContentView(R.layout.activity_login);
         // Set up the login form.
 
@@ -86,8 +112,9 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                 return false;
             }
         });
-
+        apiInterface = APIClient.getClient().create(retro.class);
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton.setBackgroundColor(ContextCompat.getColor(this, R.color.my_statusbar_color));
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,11 +192,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         View focusView = null;
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+//            mPasswordView.setError(getString(R.string.error_invalid_password));
+//            focusView = mPasswordView;
+//            cancel = true;
+//        }
 
         // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
@@ -193,14 +220,48 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(true);
 
             if (email.contentEquals("admin") && password.contentEquals("admin123")) {
-                Intent nextPage = new Intent(LoginActivity.this,MainActivityAdmin.class);
-                getSharedPreferences("Log",MODE_PRIVATE).edit().putString("logged","admin").apply();
-                startActivity(nextPage);
-                finish();
+//                Intent nextPage = new Intent(LoginActivity.this, MainActivityAdmin.class);
+//                getSharedPreferences("Log", MODE_PRIVATE).edit().putString("logged", "admin").apply();
+//                startActivity(nextPage);
+//                finish();
+                Toast.makeText(getApplicationContext(), "There is no user admin available", Toast.LENGTH_SHORT).show();
             } else {
 
-                mAuthTask = new UserLoginTask(email, password);
-                mAuthTask.execute((Void) null);
+//                mAuthTask = new UserLoginTask(email, password);
+//                mAuthTask.execute((Void) null);
+
+                login user = new login(email, password);
+                Call<login> call1 = apiInterface.createLogin(user);
+                call1.enqueue(new Callback<login>() {
+                    @Override
+                    public void onResponse(Call<login> call, Response<login> response) {
+                        login resource = response.body();
+                        String result = resource.status;
+                        if (result.contentEquals("success")) {
+//                            retn[0] = true;
+                            Intent nxtPage = new Intent(getApplicationContext(), MainActivity.class);
+                            getSharedPreferences("Log", MODE_PRIVATE).edit().putString("logged", "logged").apply();
+                            Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                            startActivity(nxtPage);
+                            finish();
+                            showProgress(false);
+                        } else {
+//                            retn[0] = false;
+                            mPasswordView.setError(getString(R.string.error_incorrect_password));
+                            mPasswordView.requestFocus();
+//                            Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
+                            showProgress(false);
+                            Toast.makeText(getApplicationContext(), "Incorrect credentials", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<login> call, Throwable t) {
+                        call.cancel();
+                        showProgress(false);
+//                        retn[0] = false;
+                    }
+                });
             }
         }
     }
@@ -323,23 +384,50 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
+//            try {
+//                // Simulate network access.
+//                Thread.sleep(2000);
+//            } catch (InterruptedException e) {
+//                return false;
+//            }
+//
+//            for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split(":");
+//                if (pieces[0].equals(mEmail)) {
+//                    // Account exists, return true if the password matches.
+//                    return pieces[1].equals(mPassword);
+//                }
+//            }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+
+            final Boolean[] retn = new Boolean[1];
+            login user = new login(mEmail, mPassword);
+            Call<login> call1 = apiInterface.createLogin(user);
+            call1.enqueue(new Callback<login>() {
+                @Override
+                public void onResponse(Call<login> call, Response<login> response) {
+                    login resource = response.body();
+                    String result = resource.status;
+                    if (result.contentEquals("success")) {
+                        retn[0] = true;
+
+                    } else {
+                        retn[0] = false;
+                        Toast.makeText(getApplicationContext(), "Incorrect credentials", Toast.LENGTH_SHORT).show();
+                    }
                 }
-            }
+
+                @Override
+                public void onFailure(Call<login> call, Throwable t) {
+                    call.cancel();
+
+                    retn[0] = false;
+                }
+            });
+
 
             // TODO: register the new account here.
-            return true;
+            return retn[0];
         }
 
         @Override
@@ -348,10 +436,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
             showProgress(false);
 
             if (success) {
+                Intent nxtPage = new Intent(getApplicationContext(), MainActivity.class);
+                getSharedPreferences("Log", MODE_PRIVATE).edit().putString("logged", "logged").apply();
+                Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
+                startActivity(nxtPage);
                 finish();
             } else {
                 mPasswordView.setError(getString(R.string.error_incorrect_password));
                 mPasswordView.requestFocus();
+                Toast.makeText(getApplicationContext(), "failed", Toast.LENGTH_SHORT).show();
             }
         }
 

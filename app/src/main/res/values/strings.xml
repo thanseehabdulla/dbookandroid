@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">dbooks</string>
+    <string name="app_name">Dbooks</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Username</string>
@@ -14,10 +14,12 @@
         completions."
     </string>
     <string name="title_activity_main_admin">MainActivityAdmin</string>
-    <string name="title_adduser">Add User</string>
+    <string name="title_adduser">Add Purchase</string>
+    <string name="title_addsales">Add Sales</string>
     <string name="title_home">User List</string>
     <string name="title_dashboard">Add User</string>
     <string name="title_notifications">Notifications</string>
     <string name="title_item_list">Items</string>
     <string name="title_item_detail">Item Detail</string>
+    <string name="title_activity_main">Menu</string>
 </resources>

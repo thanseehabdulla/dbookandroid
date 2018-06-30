@@ -1,16 +1,13 @@
 package com.example.thanseeh.dbooks;
 
 import android.app.Activity;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
-import com.example.thanseeh.dbooks.dummy.DummyContent;
-import com.example.thanseeh.dbooks.retrofit.UserPojo;
 
 /**
  * A fragment representing a single Item detail screen.
@@ -18,7 +15,7 @@ import com.example.thanseeh.dbooks.retrofit.UserPojo;
  * in two-pane mode (on tablets) or a {@link ItemDetailActivity}
  * on handsets.
  */
-public class ItemDetailFragment extends Fragment {
+public class ItemDetailFragment2 extends Fragment {
     /**
      * The fragment argument representing the item ID that this fragment
      * represents.
@@ -35,14 +32,14 @@ public class ItemDetailFragment extends Fragment {
     private String email;
     private String address;
     private String phone;
-    private String total;
-    private String invoice_number;
+
+
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ItemDetailFragment() {
+    public ItemDetailFragment2() {
     }
 
     @Override
@@ -59,8 +56,8 @@ public class ItemDetailFragment extends Fragment {
             email = getArguments().getString("date_invoice");
             phone = getArguments().getString("amount");
             address = getArguments().getString("vat");
-            total = getArguments().getString("total");
-            invoice_number = getArguments().getString("invoice_number");
+
+
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
@@ -72,7 +69,7 @@ public class ItemDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.item_detail, container, false);
+        View rootView = inflater.inflate(R.layout.item_detail2, container, false);
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
@@ -81,8 +78,7 @@ public class ItemDetailFragment extends Fragment {
             ((TextView) rootView.findViewById(R.id.email)).setText("date invoice: "+email);
             ((TextView) rootView.findViewById(R.id.phone)).setText("amount: "+phone);
             ((TextView) rootView.findViewById(R.id.address)).setText("vat: "+address);
-            ((TextView) rootView.findViewById(R.id.total)).setText("total: "+total);
-            ((TextView) rootView.findViewById(R.id.invoice)).setText("invoice number: "+invoice_number);
+
         }
 
         return rootView;

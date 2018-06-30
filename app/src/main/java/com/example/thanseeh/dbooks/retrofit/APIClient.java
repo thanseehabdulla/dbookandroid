@@ -22,7 +22,7 @@ public class APIClient {
 
 
         retrofit = new Retrofit.Builder()
-                .baseUrl("http://139.59.67.127:5000")
+                .baseUrl("http://ec2-34-210-111-75.us-west-2.compute.amazonaws.com:5000")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(okHttpClient)
                 .build();

@@ -6,32 +6,36 @@ import com.google.gson.annotations.SerializedName;
 public class UserReg {
 
 
-    @SerializedName("name")
+    @SerializedName("vendername")
     @Expose
-    public String name;
-    @SerializedName("username")
+    public String vendername;
+    @SerializedName("trn_no")
     @Expose
-    public String username;
-    @SerializedName("password")
+    public Float trn_no;
+    @SerializedName("date_invoice")
     @Expose
-    public String password;
-    @SerializedName("phone")
+    public String date_invoice;
+    @SerializedName("amount")
     @Expose
-    public String phone;
-    @SerializedName("email")
+    public Float amount;
+    @SerializedName("vat")
     @Expose
-    public String email;
-    @SerializedName("address")
+    public Float vat;
+    @SerializedName("total")
     @Expose
-    public String address;
+    public Float total;
+    @SerializedName("invoice_number")
+    @Expose
+    public String invoice_number;
 
-    public UserReg(String name, String username,String email, String password,String phone, String address) {
-        this.name = name;
-        this.username = username;
-        this.email = email;
-        this.password = password;
-        this.phone = phone;
-        this.address = address;
+    public UserReg(String vendername, Float trn_no, String date_invoice, Float amount, Float vat, Float total, String invoice_number) {
+        this.vendername = vendername;
+        this.trn_no = trn_no;
+        this.date_invoice = date_invoice;
+        this.amount = amount;
+        this.vat = vat;
+        this.total = total;
+        this.invoice_number = invoice_number;
     }
 
 

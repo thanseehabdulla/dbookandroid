@@ -5,9 +5,10 @@
     android:id="@+id/item_list"
     android:name="com.example.thanseeh.dbooks.ItemListFragment"
     android:layout_width="match_parent"
+    android:background="#19f47b22"
     android:layout_height="match_parent"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
+    android:layout_marginLeft="0dp"
+    android:layout_marginRight="0dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ItemListActivity"
     tools:listitem="@layout/item_list_content" />

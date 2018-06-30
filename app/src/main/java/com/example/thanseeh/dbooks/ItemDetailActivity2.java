@@ -36,10 +36,10 @@ import jxl.write.WritableWorkbook;
  * item details are presented side-by-side with a list of items
  * in a {@link ItemListActivity}.
  */
-public class ItemDetailActivity extends AppCompatActivity {
-    android.support.v4.app.NotificationManagerCompat notificationManager;
+public class ItemDetailActivity2 extends AppCompatActivity {
+    NotificationManagerCompat notificationManager;
     android.content.Context c;
-    android.support.v4.app.NotificationCompat.Builder mBuilder;
+    NotificationCompat.Builder mBuilder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,7 +58,7 @@ public class ItemDetailActivity extends AppCompatActivity {
         }
 
 
-        setContentView(R.layout.activity_item_detail);
+        setContentView(R.layout.activity_item_detail2);
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 

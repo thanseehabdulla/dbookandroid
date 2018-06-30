@@ -50,12 +50,12 @@ import retrofit2.Response;
  * item details. On tablets, the activity presents the list of items and
  * item details side-by-side using two vertical panes.
  */
-public class ItemListActivity extends AppCompatActivity {
+public class ItemListActivity2 extends AppCompatActivity {
 
     retro apiInterface;
-    android.support.v4.app.NotificationManagerCompat notificationManager;
-    android.content.Context c;
-    android.support.v4.app.NotificationCompat.Builder mBuilder;
+    NotificationManagerCompat notificationManager;
+    Context c;
+    NotificationCompat.Builder mBuilder;
     /**
      * Whether or not the activity is in two-pane mode, i.e. running on a tablet
      * device.
@@ -81,7 +81,7 @@ public class ItemListActivity extends AppCompatActivity {
         }
 
 
-        setContentView(R.layout.activity_item_list);
+        setContentView(R.layout.activity_item_list2);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -210,7 +210,7 @@ public class ItemListActivity extends AppCompatActivity {
     public static class SimpleItemRecyclerViewAdapter
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
-        private final ItemListActivity mParentActivity;
+        private final ItemListActivity2 mParentActivity;
         private final List<UserPojo.user> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -228,14 +228,14 @@ public class ItemListActivity extends AppCompatActivity {
                     arguments.putString("total", String.valueOf(item.total));
                     arguments.putString("invoice_number", String.valueOf(item.invoice_number));
 
-                    ItemDetailFragment fragment = new ItemDetailFragment();
+                    ItemDetailFragment2 fragment = new ItemDetailFragment2();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
                             .replace(R.id.item_detail_container, fragment)
                             .commit();
                 } else {
                     Context context = view.getContext();
-                    Intent intent = new Intent(context, ItemDetailActivity.class);
+                    Intent intent = new Intent(context, ItemDetailActivity2.class);
                     intent.putExtra("id", String.valueOf(item.id));
                     intent.putExtra("vendername", item.vendername);
                     intent.putExtra("trn_no", String.valueOf(item.trn_no));
@@ -249,7 +249,7 @@ public class ItemListActivity extends AppCompatActivity {
             }
         };
 
-        SimpleItemRecyclerViewAdapter(ItemListActivity parent,
+        SimpleItemRecyclerViewAdapter(ItemListActivity2 parent,
                                       List<UserPojo.user> items,
                                       boolean twoPane) {
             mValues = items;

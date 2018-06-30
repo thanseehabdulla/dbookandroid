@@ -1,5 +1,6 @@
 package com.example.thanseeh.dbooks.retrofit;
 
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
@@ -13,17 +14,29 @@ public class UserPojo {
 
     public class user {
         @SerializedName("id")
+        @Expose
         public Integer id;
-        @SerializedName("name")
-        public String name;
-        @SerializedName("username")
-        public String username;
-        @SerializedName("email")
-        public String email;
-        @SerializedName("phone")
-        public String phone;
-        @SerializedName("address")
-        public String address;
+        @SerializedName("vendername")
+        @Expose
+        public String vendername;
+        @SerializedName("trn_no")
+        @Expose
+        public Float trn_no;
+        @SerializedName("date_invoice")
+        @Expose
+        public String date_invoice;
+        @SerializedName("amount")
+        @Expose
+        public Float amount;
+        @SerializedName("vat")
+        @Expose
+        public Float vat;
+        @SerializedName("total")
+        @Expose
+        public Float total;
+        @SerializedName("invoice_number")
+        @Expose
+        public String invoice_number;
     }
 
 
