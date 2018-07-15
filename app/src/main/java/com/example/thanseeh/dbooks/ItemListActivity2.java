@@ -26,18 +26,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.thanseeh.dbooks.retrofit.APIClient;
-import com.example.thanseeh.dbooks.retrofit.UserPojo;
+import com.example.thanseeh.dbooks.retrofit.SalesPojo;
 import com.example.thanseeh.dbooks.retrofit.retro;
 
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
 
-import jxl.Workbook;
-import jxl.WorkbookSettings;
-import jxl.write.Label;
-import jxl.write.WritableSheet;
-import jxl.write.WritableWorkbook;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -62,7 +56,7 @@ public class ItemListActivity2 extends AppCompatActivity {
      */
     private boolean mTwoPane;
     private String newList;
-    private List<UserPojo.user> datumList;
+    private List<SalesPojo.user> datumList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,38 +104,38 @@ public class ItemListActivity2 extends AppCompatActivity {
                 try {
 
                     //file path
-                    File file = new File(directory, csvFile);
-                    WorkbookSettings wbSettings = new WorkbookSettings();
-                    wbSettings.setLocale(new Locale("en", "EN"));
-                    WritableWorkbook workbook;
-                    workbook = Workbook.createWorkbook(file, wbSettings);
-                    //Excel sheet name. 0 represents first sheet
-                    WritableSheet sheet = workbook.createSheet("userList", 0);
-
-                    sheet.addCell(new Label(0, 0, "Vender Name")); // column and row
-                    sheet.addCell(new Label(1, 0, "trn no"));
-                    sheet.addCell(new Label(2, 0, "date invoice")); // column and row
-                    sheet.addCell(new Label(3, 0, "amount"));
-                    sheet.addCell(new Label(4, 0, "vat")); // column and row
-                    sheet.addCell(new Label(5, 0, "total")); // column and row
-                    sheet.addCell(new Label(6, 0, "invoice number")); // column and row
-                    int i = 1;
-                    for (UserPojo.user datum : datumList) {
-
-                        sheet.addCell(new Label(0, i, datum.vendername));
-                        sheet.addCell(new Label(1, i, String.valueOf(datum.trn_no)));
-                        sheet.addCell(new Label(2, i, datum.date_invoice));
-                        sheet.addCell(new Label(3, i, String.valueOf(datum.amount)));
-                        sheet.addCell(new Label(4, i, String.valueOf(datum.vat)));
-                        sheet.addCell(new Label(5, i, String.valueOf(datum.amount)));
-                        sheet.addCell(new Label(6, i, datum.invoice_number));
-                        i++;
-
-                    }
-
-
-                    workbook.write();
-                    workbook.close();
+//                    File file = new File(directory, csvFile);
+//                    WorkbookSettings wbSettings = new WorkbookSettings();
+//                    wbSettings.setLocale(new Locale("en", "EN"));
+//                    WritableWorkbook workbook;
+//                    workbook = Workbook.createWorkbook(file, wbSettings);
+//                    //Excel sheet name. 0 represents first sheet
+//                    WritableSheet sheet = workbook.createSheet("userList", 0);
+//
+//                    sheet.addCell(new Label(0, 0, "Vender Name")); // column and row
+//                    sheet.addCell(new Label(1, 0, "trn no"));
+//                    sheet.addCell(new Label(2, 0, "date invoice")); // column and row
+//                    sheet.addCell(new Label(3, 0, "amount"));
+//                    sheet.addCell(new Label(4, 0, "vat")); // column and row
+//                    sheet.addCell(new Label(5, 0, "total")); // column and row
+//                    sheet.addCell(new Label(6, 0, "invoice number")); // column and row
+//                    int i = 1;
+//                    for (SalesPojo.user datum : datumList) {
+//
+//                        sheet.addCell(new Label(0, i, datum.vendername));
+//                        sheet.addCell(new Label(1, i, String.valueOf(datum.trn_no)));
+//                        sheet.addCell(new Label(2, i, datum.date_invoice));
+//                        sheet.addCell(new Label(3, i, String.valueOf(datum.amount)));
+//                        sheet.addCell(new Label(4, i, String.valueOf(datum.vat)));
+//                        sheet.addCell(new Label(5, i, String.valueOf(datum.amount)));
+//                        sheet.addCell(new Label(6, i, datum.invoice_number));
+//                        i++;
+//
+//                    }
+//
+//
+//                    workbook.write();
+//                    workbook.close();
 
 // notificationId is a unique int for each notification that you must define
                     notificationManager.notify(1, mBuilder.build());
@@ -173,17 +167,17 @@ public class ItemListActivity2 extends AppCompatActivity {
 
         final View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
-        Call<UserPojo> call = apiInterface.doGetListResources();
-        call.enqueue(new Callback<UserPojo>() {
+        Call<SalesPojo> call = apiInterface.doGetListResources3(getSharedPreferences("Log", MODE_PRIVATE).getInt("userid", 0));
+        call.enqueue(new Callback<SalesPojo>() {
             @Override
-            public void onResponse(Call<UserPojo> call, Response<UserPojo> response) {
+            public void onResponse(Call<SalesPojo> call, Response<SalesPojo> response) {
 
 
                 Log.d("TAG", response.code() + "");
 
                 String displayResponse = "";
 
-                UserPojo resource = response.body();
+                SalesPojo resource = response.body();
                 datumList = resource.data;
 
 //                for (UserPojo.user datum : datumList) {
@@ -195,14 +189,14 @@ public class ItemListActivity2 extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<UserPojo> call, Throwable t) {
+            public void onFailure(Call<SalesPojo> call, Throwable t) {
                 call.cancel();
             }
         });
 
     }
 
-    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<UserPojo.user> datumList) {
+    private void setupRecyclerView(@NonNull RecyclerView recyclerView, List<SalesPojo.user> datumList) {
 
         recyclerView.setAdapter(new SimpleItemRecyclerViewAdapter(this, datumList, mTwoPane));
     }
@@ -211,23 +205,19 @@ public class ItemListActivity2 extends AppCompatActivity {
             extends RecyclerView.Adapter<SimpleItemRecyclerViewAdapter.ViewHolder> {
 
         private final ItemListActivity2 mParentActivity;
-        private final List<UserPojo.user> mValues;
+        private final List<SalesPojo.user> mValues;
         private final boolean mTwoPane;
         private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UserPojo.user item = (UserPojo.user) view.getTag();
+                SalesPojo.user item = (SalesPojo.user) view.getTag();
                 if (mTwoPane) {
                     Bundle arguments = new Bundle();
                     arguments.putString("id", String.valueOf(item.id));
-                    arguments.putString("vendername", item.vendername);
-                    arguments.putString("trn_no", String.valueOf(item.trn_no));
-                    arguments.putString("date_invoice", item.date_invoice);
-                    arguments.putString("amount", String.valueOf(item.amount));
-                    arguments.putString("vat", String.valueOf(item.vat));
-                    arguments.putString("total", String.valueOf(item.total));
-                    arguments.putString("invoice_number", String.valueOf(item.invoice_number));
-
+                    arguments.putString("date", item.date);
+                    arguments.putString("net_sales", String.valueOf(item.net_sales));
+                    arguments.putString("tax", String.valueOf(item.tax));
+                    arguments.putString("net_total", String.valueOf(item.net_total));
                     ItemDetailFragment2 fragment = new ItemDetailFragment2();
                     fragment.setArguments(arguments);
                     mParentActivity.getSupportFragmentManager().beginTransaction()
@@ -237,20 +227,17 @@ public class ItemListActivity2 extends AppCompatActivity {
                     Context context = view.getContext();
                     Intent intent = new Intent(context, ItemDetailActivity2.class);
                     intent.putExtra("id", String.valueOf(item.id));
-                    intent.putExtra("vendername", item.vendername);
-                    intent.putExtra("trn_no", String.valueOf(item.trn_no));
-                    intent.putExtra("date_invoice", item.date_invoice);
-                    intent.putExtra("amount", String.valueOf(item.amount));
-                    intent.putExtra("vat", String.valueOf(item.vat));
-                    intent.putExtra("total", String.valueOf(item.total));
-                    intent.putExtra("invoice_number", String.valueOf(item.invoice_number));
+                    intent.putExtra("date", item.date);
+                    intent.putExtra("net_sales", String.valueOf(item.net_sales));
+                    intent.putExtra("tax", String.valueOf(item.tax));
+                    intent.putExtra("net_total", String.valueOf(item.net_total));
                     context.startActivity(intent);
                 }
             }
         };
 
         SimpleItemRecyclerViewAdapter(ItemListActivity2 parent,
-                                      List<UserPojo.user> items,
+                                      List<SalesPojo.user> items,
                                       boolean twoPane) {
             mValues = items;
             mParentActivity = parent;
@@ -266,9 +253,9 @@ public class ItemListActivity2 extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(String.valueOf(mValues.get(position).id));
+//            holder.mIdView.setText(String.valueOf(mValues.get(position).id));
             try {
-                holder.mContentView.setText(mValues.get(position).vendername);
+                holder.mContentView.setText(mValues.get(position).date + " -AED " +mValues.get(position).net_total);
 
                 holder.itemView.setTag(mValues.get(position));
                 holder.itemView.setOnClickListener(mOnClickListener);

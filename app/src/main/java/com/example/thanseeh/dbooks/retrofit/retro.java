@@ -6,11 +6,18 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface retro {
-    @GET("/api/purchase")
-    Call<UserPojo> doGetListResources();
+    @GET("/api/purchase/{id}")
+    Call<UserPojo> doGetListResources(@Path("id") int id);
+
+    @GET("/api/sales/{id}")
+    Call<SalesPojo> doGetListResources3(@Path("id") int id);
+
+    @GET("/api/vender")
+    Call<VenderPojo> doGetListResources2();
 
     @POST("/api/purchase")
     Call<UserReg> createUser(@Body UserReg user);

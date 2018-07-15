@@ -27,11 +27,11 @@ public class ItemDetailFragment2 extends Fragment {
      * The dummy content this fragment is presenting.
      */
     private String mItem;
-    private String name;
-    private String username;
-    private String email;
-    private String address;
-    private String phone;
+    private String date;
+    private String tax;
+    private String net_sales;
+    private String net_total;
+
 
 
 
@@ -51,17 +51,17 @@ public class ItemDetailFragment2 extends Fragment {
             // arguments. In a real-world scenario, use a Loader
             // to load content from a content provider.
             mItem = getArguments().getString("id");
-            name = getArguments().getString("vendername");
-            username = getArguments().getString("trn_no");
-            email = getArguments().getString("date_invoice");
-            phone = getArguments().getString("amount");
-            address = getArguments().getString("vat");
+            date = getArguments().getString("date");
+            tax = getArguments().getString("tax");
+            net_sales = getArguments().getString("net_sales");
+            net_total = getArguments().getString("net_total");
+
 
 
             Activity activity = this.getActivity();
             CollapsingToolbarLayout appBarLayout = (CollapsingToolbarLayout) activity.findViewById(R.id.toolbar_layout);
             if (appBarLayout != null) {
-                appBarLayout.setTitle(name);
+                appBarLayout.setTitle(date);
             }
         }
     }
@@ -73,11 +73,11 @@ public class ItemDetailFragment2 extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.username)).setText("vendername: "+username);
-            ((TextView) rootView.findViewById(R.id.name)).setText("trn no: "+name);
-            ((TextView) rootView.findViewById(R.id.email)).setText("date invoice: "+email);
-            ((TextView) rootView.findViewById(R.id.phone)).setText("amount: "+phone);
-            ((TextView) rootView.findViewById(R.id.address)).setText("vat: "+address);
+            ((TextView) rootView.findViewById(R.id.username)).setText("date: "+date);
+            ((TextView) rootView.findViewById(R.id.name)).setText("tax: "+tax);
+            ((TextView) rootView.findViewById(R.id.email)).setText("net sales: "+net_sales);
+            ((TextView) rootView.findViewById(R.id.phone)).setText("net total: "+net_total);
+            ((TextView) rootView.findViewById(R.id.address)).setText("");
 
         }
 

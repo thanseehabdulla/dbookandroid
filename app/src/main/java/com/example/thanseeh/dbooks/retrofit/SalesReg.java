@@ -9,26 +9,26 @@ public class SalesReg {
     @SerializedName("date")
     @Expose
     public String date;
-    @SerializedName("item_sold")
+    @SerializedName("net_total")
     @Expose
-    public Float item_sold;
-    @SerializedName("gross_sales")
-    @Expose
-    public Float gross_sales;
+    public Float net_total;
     @SerializedName("tax")
     @Expose
     public Float tax;
     @SerializedName("net_sales")
     @Expose
     public Float net_sales;
+    @SerializedName("userid")
+    @Expose
+    public Integer userid;
 
 
-    public SalesReg(String date, Float item_sold, Float gross_sales, Float tax, Float net_sales) {
+    public SalesReg(String date, Float net_total, Float tax, Float net_sales,Integer userid) {
         this.date = date;
-        this.item_sold = item_sold;
-        this.gross_sales = gross_sales;
+        this.net_total = net_total;
         this.tax = tax;
         this.net_sales = net_sales;
+        this.userid = userid;
         }
 
 

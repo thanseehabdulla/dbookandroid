@@ -173,7 +173,7 @@ public class ItemListActivity extends AppCompatActivity {
 
         final View recyclerView = findViewById(R.id.item_list);
         assert recyclerView != null;
-        Call<UserPojo> call = apiInterface.doGetListResources();
+        Call<UserPojo> call = apiInterface.doGetListResources(getSharedPreferences("Log", MODE_PRIVATE).getInt("userid",0));
         call.enqueue(new Callback<UserPojo>() {
             @Override
             public void onResponse(Call<UserPojo> call, Response<UserPojo> response) {
@@ -266,9 +266,9 @@ public class ItemListActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            holder.mIdView.setText(String.valueOf(mValues.get(position).id));
+//            holder.mIdView.setText(String.valueOf(mValues.get(position).id));
             try {
-                holder.mContentView.setText(mValues.get(position).vendername);
+                holder.mContentView.setText(mValues.get(position).vendername + " - "+mValues.get(position).date_invoice + " -AED "+mValues.get(position).total);
 
                 holder.itemView.setTag(mValues.get(position));
                 holder.itemView.setOnClickListener(mOnClickListener);

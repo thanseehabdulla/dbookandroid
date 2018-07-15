@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#f47b22</color>
     <color name="colorAccent">#f47b22</color>
     <color name="my_statusbar_color">#f47b22</color>
+    <color name="press">#000000</color>
 
 </resources>

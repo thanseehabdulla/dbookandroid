@@ -102,6 +102,15 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         populateAutoComplete();
 
         mPasswordView = (EditText) findViewById(R.id.password);
+
+        mEmailView.setSingleLine();
+        mPasswordView.setSingleLine();
+
+
+        mEmailView.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+        mPasswordView.setImeOptions(EditorInfo.IME_ACTION_NEXT);
+
+
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -114,7 +123,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         });
         apiInterface = APIClient.getClient().create(retro.class);
         Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
-        mEmailSignInButton.setBackgroundColor(ContextCompat.getColor(this, R.color.my_statusbar_color));
+//        mEmailSignInButton.setBackgroundColor(ContextCompat.getColor(this, R.color.my_statusbar_color));
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -237,10 +246,11 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                     public void onResponse(Call<login> call, Response<login> response) {
                         login resource = response.body();
                         String result = resource.status;
+                        Integer userid = resource.userid;
                         if (result.contentEquals("success")) {
 //                            retn[0] = true;
                             Intent nxtPage = new Intent(getApplicationContext(), MainActivity.class);
-                            getSharedPreferences("Log", MODE_PRIVATE).edit().putString("logged", "logged").apply();
+                            getSharedPreferences("Log", MODE_PRIVATE).edit().putString("logged", "logged").putInt("userid",userid).apply();
                             Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                             startActivity(nxtPage);
                             finish();

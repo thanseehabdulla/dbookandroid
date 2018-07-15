@@ -14,6 +14,9 @@ public class login {
     @SerializedName("status")
     @Expose
     public String status;
+    @SerializedName("userid")
+    @Expose
+    public Integer userid;
 
     public login(String name, String password) {
         this.username = name;

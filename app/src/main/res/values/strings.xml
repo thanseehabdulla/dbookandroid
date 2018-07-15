@@ -13,9 +13,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="vendername">Vender Name</string>
     <string name="title_activity_main_admin">MainActivityAdmin</string>
-    <string name="title_adduser">Add Purchase</string>
-    <string name="title_addsales">Add Sales</string>
+    <string name="title_adduser">Purchase List</string>
+    <string name="title_addsales">Sales List</string>
     <string name="title_home">User List</string>
     <string name="title_dashboard">Add User</string>
     <string name="title_notifications">Notifications</string>

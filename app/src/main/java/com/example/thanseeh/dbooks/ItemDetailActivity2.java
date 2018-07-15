@@ -90,14 +90,11 @@ public class ItemDetailActivity2 extends AppCompatActivity {
             Bundle arguments = new Bundle();
             arguments.putString("id",
                     getIntent().getStringExtra("id"));
-            arguments.putString("vendername", getIntent().getStringExtra("vendername"));
-            arguments.putString("trn_no", getIntent().getStringExtra("trn_no"));
-            arguments.putString("date_invoice", getIntent().getStringExtra("date_invoice"));
-            arguments.putString("amount", getIntent().getStringExtra("amount"));
-            arguments.putString("vat", getIntent().getStringExtra("vat"));
-            arguments.putString("total", getIntent().getStringExtra("total"));
-            arguments.putString("invoice_number", getIntent().getStringExtra("invoice_number"));
-            ItemDetailFragment fragment = new ItemDetailFragment();
+            arguments.putString("date", getIntent().getStringExtra("date"));
+            arguments.putString("net_sales", getIntent().getStringExtra("net_sales"));
+            arguments.putString("tax", getIntent().getStringExtra("tax"));
+            arguments.putString("net_total", getIntent().getStringExtra("net_total"));
+            ItemDetailFragment2 fragment = new ItemDetailFragment2();
             fragment.setArguments(arguments);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.item_detail_container, fragment)
@@ -105,69 +102,69 @@ public class ItemDetailActivity2 extends AppCompatActivity {
         }
 
 
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Creating Xls file", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                File sd = Environment.getExternalStorageDirectory();
-                String csvFile = getIntent().getStringExtra("vendername") + ".xls";
-                File directory = new File(sd.getAbsolutePath() + "/dbook");
-                //create directory if not exist
-                if (!directory.isDirectory()) {
-                    directory.mkdirs();
-                }
-
-                try {
-
-                    //file path
-                    File file = new File(directory, csvFile);
-                    WorkbookSettings wbSettings = new WorkbookSettings();
-                    wbSettings.setLocale(new Locale("en", "EN"));
-                    WritableWorkbook workbook;
-                    workbook = Workbook.createWorkbook(file, wbSettings);
-                    //Excel sheet name. 0 represents first sheet
-                    WritableSheet sheet = workbook.createSheet("userList", 0);
-
-                    sheet.addCell(new Label(0, 0, "vender name")); // column and row
-                    sheet.addCell(new Label(1, 0, "trn no"));
-                    sheet.addCell(new Label(2, 0, "date invoice"));
-                    sheet.addCell(new Label(3, 0, "amount"));
-                    sheet.addCell(new Label(4, 0, "vat"));
-                    sheet.addCell(new Label(5, 0, "total"));
-                    sheet.addCell(new Label(6, 0, "invoice number"));
-
-                    sheet.addCell(new Label(0, 1, getIntent().getStringExtra("vendername")));
-                    sheet.addCell(new Label(1, 1, getIntent().getStringExtra("trn_no")));
-                    sheet.addCell(new Label(2, 1, getIntent().getStringExtra("date_invoice")));
-                    sheet.addCell(new Label(3, 1, getIntent().getStringExtra("amount")));
-                    sheet.addCell(new Label(4, 1, getIntent().getStringExtra("vat")));
-                    sheet.addCell(new Label(5, 1, getIntent().getStringExtra("total")));
-                    sheet.addCell(new Label(6, 1, getIntent().getStringExtra("invoice_number")));
-
-
-                    workbook.write();
-                    workbook.close();
-
-// notificationId is a unique int for each notification that you must define
-                    notificationManager.notify(1, mBuilder.build());
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                Intent intent = new Intent(Intent.ACTION_VIEW);
-                intent.setDataAndType(Uri.parse(sd.getAbsolutePath() + "/dbook/" + getIntent().getStringExtra("name") + ".xls"), "application/vnd.ms-excel");
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(c, "No Application Available to View Excel",
-                            Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Creating Xls file", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//                File sd = Environment.getExternalStorageDirectory();
+//                String csvFile = getIntent().getStringExtra("vendername") + ".xls";
+//                File directory = new File(sd.getAbsolutePath() + "/dbook");
+//                //create directory if not exist
+//                if (!directory.isDirectory()) {
+//                    directory.mkdirs();
+//                }
+//
+//                try {
+//
+//                    //file path
+//                    File file = new File(directory, csvFile);
+//                    WorkbookSettings wbSettings = new WorkbookSettings();
+//                    wbSettings.setLocale(new Locale("en", "EN"));
+//                    WritableWorkbook workbook;
+//                    workbook = Workbook.createWorkbook(file, wbSettings);
+//                    //Excel sheet name. 0 represents first sheet
+//                    WritableSheet sheet = workbook.createSheet("userList", 0);
+//
+////                    sheet.addCell(new Label(0, 0, "vender name")); // column and row
+////                    sheet.addCell(new Label(1, 0, "trn no"));
+////                    sheet.addCell(new Label(2, 0, "date invoice"));
+////                    sheet.addCell(new Label(3, 0, "amount"));
+////                    sheet.addCell(new Label(4, 0, "vat"));
+////                    sheet.addCell(new Label(5, 0, "total"));
+////                    sheet.addCell(new Label(6, 0, "invoice number"));
+////
+////                    sheet.addCell(new Label(0, 1, getIntent().getStringExtra("vendername")));
+////                    sheet.addCell(new Label(1, 1, getIntent().getStringExtra("trn_no")));
+////                    sheet.addCell(new Label(2, 1, getIntent().getStringExtra("date_invoice")));
+////                    sheet.addCell(new Label(3, 1, getIntent().getStringExtra("amount")));
+////                    sheet.addCell(new Label(4, 1, getIntent().getStringExtra("vat")));
+////                    sheet.addCell(new Label(5, 1, getIntent().getStringExtra("total")));
+////                    sheet.addCell(new Label(6, 1, getIntent().getStringExtra("invoice_number")));
+//
+//
+//                    workbook.write();
+//                    workbook.close();
+//
+//// notificationId is a unique int for each notification that you must define
+//                    notificationManager.notify(1, mBuilder.build());
+//
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                }
+//
+//                Intent intent = new Intent(Intent.ACTION_VIEW);
+//                intent.setDataAndType(Uri.parse(sd.getAbsolutePath() + "/dbook/" + getIntent().getStringExtra("name") + ".xls"), "application/vnd.ms-excel");
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//
+//                try {
+//                    startActivity(intent);
+//                } catch (ActivityNotFoundException e) {
+//                    Toast.makeText(c, "No Application Available to View Excel",
+//                            Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
 
     }

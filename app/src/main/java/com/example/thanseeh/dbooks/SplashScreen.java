@@ -9,16 +9,23 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 
 public class SplashScreen extends AppCompatActivity {
 
 
     // Splash screen timer
     private static int SPLASH_TIME_OUT = 3000;
+    // Animation
+    Animation animZoomIn;
+    ImageView mg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if(getSharedPreferences("Log",MODE_PRIVATE).getString("logged","0").contentEquals("logged")){
             Intent nxtPage = new Intent(SplashScreen.this,LoginActivity.class);
             startActivity(nxtPage);
@@ -39,9 +46,12 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
     this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash);
+            mg = (ImageView)findViewById(R.id.mg);
+            // load the animation
+            animZoomIn = AnimationUtils.loadAnimation(getApplicationContext(),
+                    R.anim.zoomin);
 
-
-
+            mg.startAnimation(animZoomIn);
         new Handler().postDelayed(new Runnable() {
 
             /*
