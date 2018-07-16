@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -39,12 +40,12 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddPurchase extends AppCompatActivity{
+public class AddPurchase extends AppCompatActivity {
 
 
-    public static EditText  trnno, datainvoice, amount, vat, total,invoicenumber;
-    public static  Button submit;
-    public static Spinner vendername;
+    public static EditText trnno, datainvoice, amount, vat, total, invoicenumber;
+    public static Button submit;
+    public static AutoCompleteTextView vendername;
     retro apiInterface;
     Calendar myCalendar;
     private String item_name;
@@ -54,21 +55,21 @@ public class AddPurchase extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-              Window window = this.getWindow();
+        Window window = this.getWindow();
 
 // clear FLAG_TRANSLUCENT_STATUS flag:
-window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
 
 // add FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS flag to the window
-window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
 // finally change the color
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            window.setStatusBarColor(ContextCompat.getColor(this,R.color.my_statusbar_color));
+            window.setStatusBarColor(ContextCompat.getColor(this, R.color.my_statusbar_color));
         }
 
         setContentView(R.layout.adduser);
-        vendername = (Spinner) findViewById(R.id.vendername);
+        vendername = (AutoCompleteTextView) findViewById(R.id.vendername);
         trnno = (EditText) findViewById(R.id.trnno);
         datainvoice = (EditText) findViewById(R.id.datainvoice);
         amount = (EditText) findViewById(R.id.amount);
@@ -79,6 +80,7 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         apiInterface = APIClient.getClient().create(retro.class);
         total.setText("0.0");
         myCalendar = Calendar.getInstance();
+
 
         Call<VenderPojo> call = apiInterface.doGetListResources2();
         call.enqueue(new Callback<VenderPojo>() {
@@ -94,7 +96,7 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 datumList = resource.data;
 
                 for (VenderPojo.user datum : datumList) {
-                    categories.add(datum.name+"---"+datum.trn_no);
+                    categories.add(datum.name + "---" + datum.trn_no);
                 }
 
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_spinner_item, categories);
@@ -115,7 +117,12 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         });
 
 
-
+        vendername.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+        vendername.showDropDown();
+            }
+        });
 
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
 
@@ -156,19 +163,19 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!((s.toString()).contentEquals("")) && !(vat.getText().toString().contentEquals(""))){
-                Float tot = Float.parseFloat(vat.getText().toString()) + Float.parseFloat(s.toString());
-                total.setText(String.valueOf(tot));
-            }else if(!((s.toString()).contentEquals(""))){
-                Float tot = Float.parseFloat(s.toString());
-                total.setText(String.valueOf(tot));
-            }else if(!(vat.getText().toString().contentEquals(""))){
+                if (!((s.toString()).contentEquals("")) && !(vat.getText().toString().contentEquals(""))) {
+                    Float tot = Float.parseFloat(vat.getText().toString()) + Float.parseFloat(s.toString());
+                    total.setText(String.valueOf(tot));
+                } else if (!((s.toString()).contentEquals(""))) {
+                    Float tot = Float.parseFloat(s.toString());
+                    total.setText(String.valueOf(tot));
+                } else if (!(vat.getText().toString().contentEquals(""))) {
                     Float tot = Float.parseFloat(vat.getText().toString());
                     total.setText(String.valueOf(tot));
-                }else{
+                } else {
                     total.setText("0.0");
                 }
-                }
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -184,16 +191,16 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(!((s.toString()).contentEquals("")) && !(amount.getText().toString().contentEquals(""))){
+                if (!((s.toString()).contentEquals("")) && !(amount.getText().toString().contentEquals(""))) {
                     Float tot = Float.parseFloat(amount.getText().toString()) + Float.parseFloat(s.toString());
                     total.setText(String.valueOf(tot));
-                }else if(!((s.toString()).contentEquals(""))){
+                } else if (!((s.toString()).contentEquals(""))) {
                     Float tot = Float.parseFloat(s.toString());
                     total.setText(String.valueOf(tot));
-                }else if(!(amount.getText().toString().contentEquals(""))){
+                } else if (!(amount.getText().toString().contentEquals(""))) {
                     Float tot = Float.parseFloat(amount.getText().toString());
                     total.setText(String.valueOf(tot));
-                }else{
+                } else {
                     total.setText("0.0");
                 }
             }
@@ -205,18 +212,14 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         });
 
 // Spinner click listener
-        vendername.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        vendername.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                item_name = parent.getItemAtPosition(position).toString();
-                trnno.setText(vendername.getSelectedItem().toString().split("---")[1]);
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                item_name = vendername.getText().toString().split("---")[0];
+                trnno.setText(vendername.getText().toString().split("---")[1]);
+                vendername.setText(vendername.getText().toString().split("---")[0]);
                 // Showing selected spinner item
                 Toast.makeText(parent.getContext(), "Selected: " + item_name, Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
             }
         });
 
@@ -238,26 +241,25 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         invoicenumber.setImeOptions(EditorInfo.IME_ACTION_NEXT);
 
 
-
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-               if( trnno.getText().toString().length() == 0 )
-                    trnno.setError( "Field is required!" );
-                else if( datainvoice.getText().toString().length() == 0 )
-                    datainvoice.setError( "Field is required!" );
-                else if( amount.getText().toString().length() == 0 )
-                    amount.setError( "Field is required!" );
-                else if( vat.getText().toString().length() == 0 )
-                    vat.setError( "Field is required!" );
-                else if( total.getText().toString().length() == 0 )
-                    total.setError( "Field is required!" );
-                else if( invoicenumber.getText().toString().length() == 0 )
-                    invoicenumber.setError( "Field is required!" );
+                if (trnno.getText().toString().length() == 0)
+                    trnno.setError("Field is required!");
+                else if (datainvoice.getText().toString().length() == 0)
+                    datainvoice.setError("Field is required!");
+                else if (amount.getText().toString().length() == 0)
+                    amount.setError("Field is required!");
+                else if (vat.getText().toString().length() == 0)
+                    vat.setError("Field is required!");
+                else if (total.getText().toString().length() == 0)
+                    total.setError("Field is required!");
+                else if (invoicenumber.getText().toString().length() == 0)
+                    invoicenumber.setError("Field is required!");
                 else
-                UserAdd(item_name.split("---")[0], trnno.getText().toString(), datainvoice.getText().toString(), amount.getText().toString(), vat.getText().toString(), total.getText().toString(),invoicenumber.getText().toString());
-                }
+                    UserAdd(item_name.split("---")[0], trnno.getText().toString(), datainvoice.getText().toString(), amount.getText().toString(), vat.getText().toString(), total.getText().toString(), invoicenumber.getText().toString());
+            }
         });
 
     }
@@ -270,7 +272,7 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
     }
 
     private void UserAdd(String s, String s1, String s2, String s3, String s4, String s5, String s6) {
-        UserReg user = new UserReg(s, s1, s2, Float.parseFloat(s3), Float.parseFloat(s4), Float.parseFloat(s5),s6,getSharedPreferences("Log", MODE_PRIVATE).getInt("userid",0));
+        UserReg user = new UserReg(s, s1, s2, Float.parseFloat(s3), Float.parseFloat(s4), Float.parseFloat(s5), s6, getSharedPreferences("Log", MODE_PRIVATE).getInt("userid", 0));
         Call<UserReg> call1 = apiInterface.createUser(user);
         call1.enqueue(new Callback<UserReg>() {
             @Override

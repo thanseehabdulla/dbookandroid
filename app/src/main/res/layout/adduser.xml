@@ -18,18 +18,18 @@
         android:id="@+id/textInputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <Spinner
+        <AutoCompleteTextView
             android:id="@+id/vendername"
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_marginTop="32dp"
-            android:prompt="@string/vendername"
+            android:hint="@string/vendername"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"

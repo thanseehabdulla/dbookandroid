@@ -76,8 +76,8 @@ public class ItemDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.username)).setText("vendername: "+username);
-            ((TextView) rootView.findViewById(R.id.name)).setText("trn no: "+name);
+            ((TextView) rootView.findViewById(R.id.username)).setText("vendername: "+name);
+            ((TextView) rootView.findViewById(R.id.name)).setText("trn no: "+username);
             ((TextView) rootView.findViewById(R.id.email)).setText("date invoice: "+email);
             ((TextView) rootView.findViewById(R.id.phone)).setText("amount: "+phone);
             ((TextView) rootView.findViewById(R.id.address)).setText("vat: "+address);
