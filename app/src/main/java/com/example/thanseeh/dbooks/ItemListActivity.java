@@ -268,7 +268,7 @@ public class ItemListActivity extends AppCompatActivity {
         public void onBindViewHolder(final ViewHolder holder, int position) {
 //            holder.mIdView.setText(String.valueOf(mValues.get(position).id));
             try {
-                holder.mContentView.setText(mValues.get(position).vendername + " - "+mValues.get(position).date_invoice + " -AED "+mValues.get(position).total);
+                holder.mContentView.setText(mValues.get(position).date_invoice + " - "+mValues.get(position).vendername + " -AED "+mValues.get(position).total);
 
                 holder.itemView.setTag(mValues.get(position));
                 holder.itemView.setOnClickListener(mOnClickListener);

@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.TextView;
 
 import com.example.thanseeh.dbooks.adapter.ItemAdapter;
 import com.example.thanseeh.dbooks.model.HomeItems;
@@ -20,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<HomeItems> movieList = new ArrayList<>();
     private RecyclerView recyclerView;
     private ItemAdapter mAdapter;
+    private TextView welcome;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +29,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        welcome=(TextView)findViewById(R.id.welcome);
+        welcome.setText("Welcome, "+ getSharedPreferences("Log", MODE_PRIVATE).getString("username","0"));
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
