@@ -201,6 +201,7 @@ window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
                 Intent nxtPage = new Intent(getApplicationContext(), MainActivity.class);
                 Toast.makeText(getApplicationContext(), "success", Toast.LENGTH_SHORT).show();
                 startActivity(nxtPage);
+                finish();
 
             }
 

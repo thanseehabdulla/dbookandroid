@@ -76,13 +76,13 @@ public class ItemDetailFragment extends Fragment {
 
         // Show the dummy content as text in a TextView.
         if (mItem != null) {
-            ((TextView) rootView.findViewById(R.id.username)).setText("vendername: "+name);
-            ((TextView) rootView.findViewById(R.id.name)).setText("trn no: "+username);
-            ((TextView) rootView.findViewById(R.id.email)).setText("date invoice: "+email);
-            ((TextView) rootView.findViewById(R.id.phone)).setText("amount: "+phone);
-            ((TextView) rootView.findViewById(R.id.address)).setText("vat: "+address);
-            ((TextView) rootView.findViewById(R.id.total)).setText("total: "+total);
-            ((TextView) rootView.findViewById(R.id.invoice)).setText("invoice number: "+invoice_number);
+            ((TextView) rootView.findViewById(R.id.username)).setText("Vender Name: "+name);
+            ((TextView) rootView.findViewById(R.id.name)).setText("Trn No: "+username);
+            ((TextView) rootView.findViewById(R.id.email)).setText("Date Invoice: "+email);
+            ((TextView) rootView.findViewById(R.id.phone)).setText("Amount: "+phone);
+            ((TextView) rootView.findViewById(R.id.address)).setText("Vat: "+address);
+            ((TextView) rootView.findViewById(R.id.total)).setText("Total: "+total);
+            ((TextView) rootView.findViewById(R.id.invoice)).setText("Invoice Number: "+invoice_number);
         }
 
         return rootView;
